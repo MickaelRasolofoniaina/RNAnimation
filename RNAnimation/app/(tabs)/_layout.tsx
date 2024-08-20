@@ -11,6 +11,9 @@ export default function TabLayout() {
 				tabBarActiveTintColor: Colors.light.tint,
 				headerShown: false,
 			}}
+			sceneContainerStyle={{
+				padding: 16,
+			}}
 		>
 			<Tabs.Screen
 				name="index"
@@ -19,6 +22,30 @@ export default function TabLayout() {
 					tabBarIcon: ({ color, focused }) => (
 						<TabBarIcon
 							name={focused ? "home" : "home-outline"}
+							color={color}
+						/>
+					),
+				}}
+			/>
+			<Tabs.Screen
+				name="about"
+				options={{
+					title: "About",
+					tabBarIcon: ({ color, focused }) => (
+						<TabBarIcon
+							name={focused ? "information" : "information-outline"}
+							color={color}
+						/>
+					),
+				}}
+			/>
+			<Tabs.Screen
+				name="links"
+				options={{
+					title: "Links",
+					tabBarIcon: ({ color, focused }) => (
+						<TabBarIcon
+							name={focused ? "link" : "link-outline"}
 							color={color}
 						/>
 					),
