@@ -11,37 +11,23 @@ const HEADER_HEIGHT = 50;
 export default function CornersBreakdown() {
 	const { top, bottom } = useSafeAreaInsets();
 
-	const translateY = new Animated.Value(0);
-	const translateX = new Animated.Value(0);
-
-	const interpolatedTY = translateY.interpolate({
-		inputRange: [0, 1],
-		outputRange: [0, WINDOW_HEIGHT - HEADER_HEIGHT - top - bottom - BOX_HEIGHT],
-	});
-
-	const interpolatedTX = translateX.interpolate({
-		inputRange: [0, 1],
-		outputRange: [0, WINDOW_WIDTH - BOX_WIDTH],
-	});
+	const translate = new Animated.ValueXY();
 
 	const startAnimation = () => {
 		Animated.sequence([
-			Animated.spring(translateY, {
-				toValue: 1,
+			Animated.spring(translate.y, {
+				toValue: WINDOW_HEIGHT - HEADER_HEIGHT - top - bottom - BOX_HEIGHT,
 				useNativeDriver: false,
 			}),
-			Animated.delay(500),
-			Animated.spring(translateX, {
-				toValue: 1,
+			Animated.spring(translate.x, {
+				toValue: WINDOW_WIDTH - BOX_WIDTH,
 				useNativeDriver: false,
 			}),
-			Animated.delay(500),
-			Animated.spring(translateY, {
+			Animated.spring(translate.y, {
 				toValue: 0,
 				useNativeDriver: false,
 			}),
-			Animated.delay(500),
-			Animated.spring(translateX, {
+			Animated.spring(translate.x, {
 				toValue: 0,
 				useNativeDriver: false,
 			}),
@@ -49,21 +35,14 @@ export default function CornersBreakdown() {
 	};
 
 	return (
-		<Container screenTitle="Corners breakdown">
+		<Container screenTitle="Corners">
 			<TouchableWithoutFeedback onPress={startAnimation}>
 				<Animated.View
 					style={{
 						height: BOX_HEIGHT,
 						width: BOX_WIDTH,
 						backgroundColor: "darkorange",
-						transform: [
-							{
-								translateY: interpolatedTY,
-							},
-							{
-								translateX: interpolatedTX,
-							},
-						],
+						transform: translate.getTranslateTransform(),
 					}}
 				/>
 			</TouchableWithoutFeedback>

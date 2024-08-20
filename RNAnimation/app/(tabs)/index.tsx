@@ -10,8 +10,8 @@ type Animation = {
 
 const ANIMATIONS: Animation[] = [
 	{
-		title: "Corners breakdown",
-		href: "/udemy/corners-breakdown",
+		title: "Corners",
+		href: "/udemy/corners",
 	},
 ];
 
