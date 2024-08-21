@@ -26,13 +26,6 @@ export default function Messenger() {
 			// The gesture has started. Show visual feedback so the user knows
 			// what is happening!
 			// gestureState.d{x,y} will be set to zero now
-			lastTranslates.extractOffset();
-
-			for (let i = 0; i < length - 1; i++) {
-				setTimeout(() => {
-					translates[i].extractOffset();
-				}, STAGGER_DURATION * (length - i));
-			}
 		},
 		onPanResponderMove: (evt, gestureState) => {
 			// The most recent move distance is gestureState.move{X,Y}
@@ -54,6 +47,13 @@ export default function Messenger() {
 		onPanResponderRelease: (evt, gestureState) => {
 			// The user has released all touches while this view is the
 			// responder. This typically means a gesture has succeeded
+			lastTranslates.extractOffset();
+
+			for (let i = 0; i < length - 1; i++) {
+				setTimeout(() => {
+					translates[i].extractOffset();
+				}, STAGGER_DURATION * (length - i));
+			}
 		},
 		onPanResponderTerminate: (evt, gestureState) => {
 			// Another component has become the responder, so this gesture
