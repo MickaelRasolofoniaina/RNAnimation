@@ -8,14 +8,13 @@ const AVATARS = [
 	"https://st2.depositphotos.com/41960954/42058/i/450/depositphotos_420585092-stock-photo-beautiful-woman-portrait-digital-illustration.jpg",
 ];
 
-// TO-DO: Use other alternative than setTimeout
+// This contains bugs comparing to the previous version using timeout
+// Try to figure out how to fix it
 
 export default function Messenger() {
 	const STAGGER_DURATION = 50;
 
 	const translates = AVATARS.map(() => new Animated.ValueXY());
-	const lastTranslates = translates[translates.length - 1];
-	const length = translates.length;
 
 	const panResponder = PanResponder.create({
 		// Ask to be the responder:
@@ -28,34 +27,32 @@ export default function Messenger() {
 			// The gesture has started. Show visual feedback so the user knows
 			// what is happening!
 			// gestureState.d{x,y} will be set to zero now
+
+			translates.forEach((translate) => {
+				translate.extractOffset();
+				translate.setValue({ x: 0, y: 0 });
+			});
 		},
-		onPanResponderMove: (evt, gestureState) => {
+		onPanResponderMove: (evt, { dx, dy }) => {
 			// The most recent move distance is gestureState.move{X,Y}
 			// The accumulated gesture distance since becoming responder is
 			// gestureState.d{x,y}
-			const { dx, dy } = gestureState;
+			translates[translates.length - 1].setValue({ x: dx, y: dy });
 
-			lastTranslates.x.setValue(dx);
-			lastTranslates.y.setValue(dy);
-
-			for (let i = 0; i < length - 1; i++) {
-				setTimeout(() => {
-					translates[i].x.setValue(dx);
-					translates[i].y.setValue(dy);
-				}, STAGGER_DURATION * (length - i));
-			}
+			translates.slice(0, translates.length - 1).forEach((translate, index) => {
+				Animated.sequence([
+					Animated.delay(STAGGER_DURATION * (translates.length - index)),
+					Animated.spring(translate, {
+						toValue: { x: dx, y: dy },
+						useNativeDriver: false,
+					}),
+				]).start();
+			});
 		},
 		onPanResponderTerminationRequest: (evt, gestureState) => true,
 		onPanResponderRelease: (evt, gestureState) => {
 			// The user has released all touches while this view is the
 			// responder. This typically means a gesture has succeeded
-			lastTranslates.extractOffset();
-
-			for (let i = 0; i < length - 1; i++) {
-				setTimeout(() => {
-					translates[i].extractOffset();
-				}, STAGGER_DURATION * (length - i));
-			}
 		},
 		onPanResponderTerminate: (evt, gestureState) => {
 			// Another component has become the responder, so this gesture
@@ -73,7 +70,7 @@ export default function Messenger() {
 			<View>
 				{AVATARS.map((avatar, index) => {
 					const panHandler =
-						index === AVATARS.length - 1 ? panResponder.panHandlers : null;
+						index === AVATARS.length - 1 ? panResponder.panHandlers : {};
 					return (
 						<Animated.Image
 							key={avatar}
