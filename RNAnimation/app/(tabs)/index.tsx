@@ -1,7 +1,7 @@
 import Button from "@/components/button/Button";
 import { router, type Href } from "expo-router";
 import React from "react";
-import { View } from "react-native";
+import { FlatList, View } from "react-native";
 
 type Animation = {
 	title: string;
@@ -13,18 +13,22 @@ const ANIMATIONS: Animation[] = [
 		title: "Corners",
 		href: "/udemy/corners",
 	},
+	{
+		title: "Messenger",
+		href: "/udemy/messenger",
+	},
 ];
 
 export default function HomeScreen() {
 	return (
 		<View className="flex-1">
-			{ANIMATIONS.map(({ title, href }) => (
-				<Button
-					key={title}
-					label={title}
-					onPress={() => router.navigate(href)}
-				/>
-			))}
+			<FlatList
+				data={ANIMATIONS}
+				renderItem={({ item: { title, href } }) => (
+					<Button label={title} onPress={() => router.navigate(href)} />
+				)}
+				keyExtractor={({ title }) => title}
+			/>
 		</View>
 	);
 }
