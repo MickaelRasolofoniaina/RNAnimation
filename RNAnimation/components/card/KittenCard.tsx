@@ -13,8 +13,8 @@ type Props = {
 	onRemove: () => void;
 };
 
-const DX_BOUND = 50;
-const DX_DROP = DX_BOUND * 2;
+const DX_THRESHOLD = 50;
+const DX_DROP = DX_THRESHOLD * 2;
 
 export default function KittenCard({ image, description, onRemove }: Props) {
 	const translate = new Animated.ValueXY();
@@ -56,14 +56,14 @@ export default function KittenCard({ image, description, onRemove }: Props) {
 					...translate.getTranslateTransform(),
 					{
 						rotate: rotation.interpolate({
-							inputRange: [-DX_BOUND, 0, DX_BOUND],
+							inputRange: [-DX_THRESHOLD, 0, DX_THRESHOLD],
 							outputRange: ["-30deg", "0deg", "30deg"],
 							extrapolate: "clamp",
 						}),
 					},
 				],
 				opacity: rotation.interpolate({
-					inputRange: [-DX_BOUND, 0, DX_BOUND],
+					inputRange: [-DX_THRESHOLD, 0, DX_THRESHOLD],
 					outputRange: [0.8, 1, 0.8],
 					extrapolate: "clamp",
 				}),
@@ -82,14 +82,14 @@ export default function KittenCard({ image, description, onRemove }: Props) {
 									},
 									{
 										scale: rotation.interpolate({
-											inputRange: [0, DX_BOUND],
+											inputRange: [0, DX_THRESHOLD],
 											outputRange: [0, 1],
 											extrapolate: "clamp",
 										}),
 									},
 								],
 								opacity: rotation.interpolate({
-									inputRange: [0, DX_BOUND],
+									inputRange: [0, DX_THRESHOLD],
 									outputRange: [0, 1],
 									extrapolate: "clamp",
 								}),
@@ -108,14 +108,14 @@ export default function KittenCard({ image, description, onRemove }: Props) {
 									},
 									{
 										scale: rotation.interpolate({
-											inputRange: [-DX_BOUND, 0],
+											inputRange: [-DX_THRESHOLD, 0],
 											outputRange: [1, 0],
 											extrapolate: "clamp",
 										}),
 									},
 								],
 								opacity: rotation.interpolate({
-									inputRange: [-DX_BOUND, 0],
+									inputRange: [-DX_THRESHOLD, 0],
 									outputRange: [1, 0],
 									extrapolate: "clamp",
 								}),
