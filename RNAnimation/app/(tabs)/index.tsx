@@ -21,6 +21,10 @@ const ANIMATIONS: Animation[] = [
 		title: "Kitten card",
 		href: "/udemy/kitten",
 	},
+	{
+		title: "Form",
+		href: "/udemy/form",
+	},
 ];
 
 export default function HomeScreen() {
