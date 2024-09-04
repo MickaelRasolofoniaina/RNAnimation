@@ -25,6 +25,10 @@ const ANIMATIONS: Animation[] = [
 		title: "Form",
 		href: "/udemy/form",
 	},
+	{
+		title: "Button",
+		href: "/udemy/button",
+	},
 ];
 
 export default function HomeScreen() {
