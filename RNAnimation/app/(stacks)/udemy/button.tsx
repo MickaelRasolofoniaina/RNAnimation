@@ -15,20 +15,19 @@ export default function Button() {
 		animation.setValue(0);
 		opacity.setValue(1);
 
-		Animated.timing(animation, {
-			toValue: 1,
-			duration: 500,
-			easing: Easing.out(Easing.sin),
-			useNativeDriver: false,
-		}).start(({ finished }) => {
-			if (finished) {
-				Animated.timing(opacity, {
-					toValue: 0,
-					duration: 500,
-					useNativeDriver: false,
-				}).start();
-			}
-		});
+		Animated.sequence([
+			Animated.timing(animation, {
+				toValue: 1,
+				duration: 500,
+				easing: Easing.out(Easing.sin),
+				useNativeDriver: false,
+			}),
+			Animated.timing(opacity, {
+				toValue: 0,
+				duration: 500,
+				useNativeDriver: false,
+			}),
+		]).start();
 	};
 
 	const width = animation.interpolate({
