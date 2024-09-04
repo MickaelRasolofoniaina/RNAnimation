@@ -3,7 +3,30 @@ import Input from "@/components/form/Input";
 import Container from "@/components/layout/Container";
 import Title from "@/components/typography/Typography";
 import { useEffect } from "react";
-import { View, Animated } from "react-native";
+import { View, Animated, ViewProps } from "react-native";
+
+type SlideAnimationProps = {
+	animatedValue: Animated.Value;
+} & ViewProps;
+
+function getAnimatedStyles(from: Animated.Value) {
+	return {
+		opacity: from,
+		transform: [
+			{
+				translateY: from.interpolate({
+					inputRange: [0, 1],
+					outputRange: [-20, 0],
+					extrapolate: "clamp",
+				}),
+			},
+		],
+	};
+}
+
+function SlideAnimation({ animatedValue, ...rest }: SlideAnimationProps) {
+	return <Animated.View style={getAnimatedStyles(animatedValue)} {...rest} />;
+}
 
 export default function Form() {
 	const emailInputAnimatedValue = new Animated.Value(0);
@@ -37,60 +60,15 @@ export default function Form() {
 		>
 			<View className="w-full px-5">
 				<Title className="text-center">Login</Title>
-				<Animated.View
-					style={[
-						{
-							opacity: emailInputAnimatedValue,
-							transform: [
-								{
-									translateY: emailInputAnimatedValue.interpolate({
-										inputRange: [0, 1],
-										outputRange: [-20, 0],
-										extrapolate: "clamp",
-									}),
-								},
-							],
-						},
-					]}
-				>
+				<SlideAnimation animatedValue={emailInputAnimatedValue}>
 					<Input placeholder="Email" />
-				</Animated.View>
-				<Animated.View
-					style={[
-						{
-							opacity: passwordAnimatedValue,
-							transform: [
-								{
-									translateY: emailInputAnimatedValue.interpolate({
-										inputRange: [0, 1],
-										outputRange: [-20, 0],
-										extrapolate: "clamp",
-									}),
-								},
-							],
-						},
-					]}
-				>
+				</SlideAnimation>
+				<SlideAnimation animatedValue={passwordAnimatedValue}>
 					<Input placeholder="Password" />
-				</Animated.View>
-				<Animated.View
-					style={[
-						{
-							opacity: buttonAnimatedValue,
-							transform: [
-								{
-									translateY: emailInputAnimatedValue.interpolate({
-										inputRange: [0, 1],
-										outputRange: [-20, 0],
-										extrapolate: "clamp",
-									}),
-								},
-							],
-						},
-					]}
-				>
+				</SlideAnimation>
+				<SlideAnimation animatedValue={buttonAnimatedValue}>
 					<Button label="Login" />
-				</Animated.View>
+				</SlideAnimation>
 			</View>
 		</Container>
 	);
