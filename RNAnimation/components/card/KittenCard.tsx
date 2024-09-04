@@ -18,31 +18,38 @@ const DX_DROP = DX_THRESHOLD * 2;
 
 export default function KittenCard({ image, description, onRemove }: Props) {
 	const translate = new Animated.ValueXY();
-	const rotation = new Animated.Value(0);
+	const translateX = Animated.divide(translate.x, 1.8);
 
 	const panResponder = PanResponder.create({
 		onStartShouldSetPanResponder: () => true,
 		onPanResponderGrant: (_, __) => {},
-		onPanResponderMove: (_, { dx, dy }) => {
-			translate.setValue({ x: dx, y: dy });
-			rotation.setValue(dx / 1.8);
-		},
-		onPanResponderRelease: (_, { dx }) => {
+		onPanResponderMove: Animated.event(
+			[
+				null,
+				{
+					dx: translate.x,
+					dy: translate.y,
+				},
+			],
+			{ useNativeDriver: false }
+		),
+		onPanResponderRelease: (_, { dx, vx, vy }) => {
 			if (Math.abs(dx) < DX_DROP) {
-				Animated.parallel([
-					Animated.spring(translate, {
-						toValue: { x: 0, y: 0 },
-						useNativeDriver: true,
-						bounciness: 12,
-					}),
-					Animated.spring(rotation, {
-						toValue: 0,
-						useNativeDriver: true,
-						bounciness: 0,
-					}),
-				]).start();
+				Animated.spring(translate, {
+					toValue: { x: 0, y: 0 },
+					useNativeDriver: false,
+					bounciness: 12,
+				}).start();
 			} else {
-				onRemove();
+				Animated.decay(translate, {
+					velocity: { x: vx, y: vy },
+					deceleration: 0.5,
+					useNativeDriver: false,
+				}).start(({ finished }) => {
+					if (finished) {
+						onRemove();
+					}
+				});
 			}
 		},
 	});
@@ -55,14 +62,14 @@ export default function KittenCard({ image, description, onRemove }: Props) {
 				transform: [
 					...translate.getTranslateTransform(),
 					{
-						rotate: rotation.interpolate({
+						rotate: translateX.interpolate({
 							inputRange: [-DX_THRESHOLD, 0, DX_THRESHOLD],
 							outputRange: ["-30deg", "0deg", "30deg"],
 							extrapolate: "clamp",
 						}),
 					},
 				],
-				opacity: rotation.interpolate({
+				opacity: translateX.interpolate({
 					inputRange: [-DX_THRESHOLD, 0, DX_THRESHOLD],
 					outputRange: [0.8, 1, 0.8],
 					extrapolate: "clamp",
@@ -81,14 +88,14 @@ export default function KittenCard({ image, description, onRemove }: Props) {
 										rotate: "-33deg",
 									},
 									{
-										scale: rotation.interpolate({
+										scale: translateX.interpolate({
 											inputRange: [0, DX_THRESHOLD],
 											outputRange: [0, 1],
 											extrapolate: "clamp",
 										}),
 									},
 								],
-								opacity: rotation.interpolate({
+								opacity: translateX.interpolate({
 									inputRange: [0, DX_THRESHOLD],
 									outputRange: [0, 1],
 									extrapolate: "clamp",
@@ -107,14 +114,14 @@ export default function KittenCard({ image, description, onRemove }: Props) {
 										rotate: "33deg",
 									},
 									{
-										scale: rotation.interpolate({
+										scale: translateX.interpolate({
 											inputRange: [-DX_THRESHOLD, 0],
 											outputRange: [1, 0],
 											extrapolate: "clamp",
 										}),
 									},
 								],
-								opacity: rotation.interpolate({
+								opacity: translateX.interpolate({
 									inputRange: [-DX_THRESHOLD, 0],
 									outputRange: [1, 0],
 									extrapolate: "clamp",

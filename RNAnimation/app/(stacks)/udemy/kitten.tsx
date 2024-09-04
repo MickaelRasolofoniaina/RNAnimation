@@ -1,7 +1,7 @@
 import KittenCard from "@/components/card/KittenCard";
 import Container from "@/components/layout/Container";
 import { useState } from "react";
-import { View, Text, Animated } from "react-native";
+import { View, Text, Animated, TouchableOpacity } from "react-native";
 
 type Kitten = {
 	id: number;
@@ -17,21 +17,21 @@ export default function Kitten() {
 			image:
 				"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Juvenile_Ragdoll.jpg/1200px-Juvenile_Ragdoll.jpg",
 			description: "White kitten",
-			scale: new Animated.Value(0.8),
+			scale: new Animated.Value(0.9),
 		},
 		{
 			id: 2,
 			image:
 				"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF08wbZeJDlwbOTkKlnNYcdKve_Y2lCasOEQ&s",
 			description: "Yellow kitten",
-			scale: new Animated.Value(0.8),
+			scale: new Animated.Value(0.9),
 		},
 		{
 			id: 3,
 			image:
 				"https://assets-global.website-files.com/62604bb9b6d9d12008ba1216/627d0cbe0c5bbd447a635839_new-kitten-checklist.jpg",
 			description: "Three black yellow kitten",
-			scale: new Animated.Value(0.8),
+			scale: new Animated.Value(0.9),
 		},
 		{
 			id: 4,
@@ -63,6 +63,10 @@ export default function Kitten() {
 		}
 	};
 
+	const onVotingNo = () => {};
+
+	const onVotingYes = () => {};
+
 	return (
 		<Container screenTitle="Kitten card">
 			<View className="flex-1 items-center justify-center">
@@ -88,12 +92,16 @@ export default function Kitten() {
 			</View>
 			{/* We can also create a dedicated component for this */}
 			<View className="flex-row justify-center gap-4 pb-2">
-				<View className="w-[60] h-[60] rounded-full shadow-sm shadow-red-600 bg-white justify-center items-center">
-					<Text className="text-red-600">No</Text>
-				</View>
-				<View className="w-[60] h-[60] rounded-full shadow-sm shadow-green-600 bg-white justify-center items-center">
-					<Text className="text-green-600">Yes</Text>
-				</View>
+				<TouchableOpacity onPress={onVotingNo}>
+					<View className="w-[60] h-[60] rounded-full shadow-sm shadow-red-600 bg-white justify-center items-center">
+						<Text className="text-red-600">No</Text>
+					</View>
+				</TouchableOpacity>
+				<TouchableOpacity onPress={onVotingYes}>
+					<View className="w-[60] h-[60] rounded-full shadow-sm shadow-green-600 bg-white justify-center items-center">
+						<Text className="text-green-600">Yes</Text>
+					</View>
+				</TouchableOpacity>
 			</View>
 		</Container>
 	);
