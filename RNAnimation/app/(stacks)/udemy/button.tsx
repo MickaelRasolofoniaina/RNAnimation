@@ -1,5 +1,4 @@
 import Container from "@/components/layout/Container";
-import { useState } from "react";
 import {
 	TouchableWithoutFeedback,
 	Text,
