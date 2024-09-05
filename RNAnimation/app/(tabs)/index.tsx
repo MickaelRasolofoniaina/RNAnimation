@@ -33,6 +33,10 @@ const ANIMATIONS: Animation[] = [
 		title: "Notification",
 		href: "/udemy/notification",
 	},
+	{
+		title: "Quiz",
+		href: "/udemy/quiz",
+	},
 ];
 
 export default function HomeScreen() {
