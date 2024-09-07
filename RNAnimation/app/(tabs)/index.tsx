@@ -37,6 +37,10 @@ const ANIMATIONS: Animation[] = [
 		title: "Quiz",
 		href: "/udemy/quiz",
 	},
+	{
+		title: "Shared element",
+		href: "/(stacks)/udemy/shared-element",
+	},
 ];
 
 export default function HomeScreen() {
