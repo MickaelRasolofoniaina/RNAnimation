@@ -71,7 +71,6 @@ export default function SharedElement() {
 	const size = new Animated.ValueXY();
 	const position = new Animated.ValueXY();
 	const opacity = new Animated.Value(0);
-	const originalOpacity = new Animated.Value(1);
 
 	const originalSize = useRef({ x: 0, y: 0 });
 	const originalPosition = useRef({ x: 0, y: 0 });
@@ -105,7 +104,6 @@ export default function SharedElement() {
 			}),
 		]).start(({ finished }) => {
 			if (finished) {
-				originalOpacity.setValue(1);
 				setSelectedId(-1);
 			}
 		});
@@ -124,8 +122,6 @@ export default function SharedElement() {
 
 				position.x.setValue(_x);
 				position.y.setValue(_y);
-
-				originalOpacity.setValue(0);
 
 				Animated.parallel([
 					Animated.timing(opacity, {
@@ -174,7 +170,7 @@ export default function SharedElement() {
 							resizeMode="cover"
 							className="flex-1"
 							style={{
-								opacity: id === selectedId ? originalOpacity : 1,
+								opacity: id === selectedId ? 0 : 1,
 							}}
 						/>
 					</TouchableOpacity>
