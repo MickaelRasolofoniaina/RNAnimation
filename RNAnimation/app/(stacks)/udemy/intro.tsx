@@ -13,8 +13,7 @@ export default function Intro() {
 				contentContainerStyle={{
 					flexDirection: "row",
 				}}
-				snapToInterval={WINDOW_WIDTH}
-				decelerationRate="fast"
+				pagingEnabled
 				onScroll={Animated.event(
 					[
 						{
