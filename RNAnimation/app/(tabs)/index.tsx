@@ -39,7 +39,11 @@ const ANIMATIONS: Animation[] = [
 	},
 	{
 		title: "Shared element",
-		href: "/(stacks)/udemy/shared-element",
+		href: "/udemy/shared-element",
+	},
+	{
+		title: "Text editor",
+		href: "/udemy/text-editor",
 	},
 ];
 
