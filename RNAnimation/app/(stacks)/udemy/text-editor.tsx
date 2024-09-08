@@ -18,19 +18,16 @@ export default function TextEditor() {
 	const editorAnimation = useRef(new Animated.Value(0)).current;
 
 	const triggerCloseAnimation = () => {
-		Animated.timing(animation, {
+		return Animated.timing(animation, {
 			toValue: 0,
 			duration: 250,
 			useNativeDriver: false,
-		}).start(() => {
-			show.current = false;
-			setTextColor(previewColor);
 		});
 	};
 
 	const handleTextPress = () => {
 		if (show.current) {
-			triggerCloseAnimation();
+			triggerCloseAnimation().start();
 		} else {
 			Animated.timing(animation, {
 				toValue: 1,
@@ -53,12 +50,16 @@ export default function TextEditor() {
 	const handleConfirm = () => {
 		Keyboard.dismiss();
 
-		Animated.timing(editorAnimation, {
-			toValue: 0,
-			duration: 260,
-			useNativeDriver: false,
-		}).start(() => {
-			triggerCloseAnimation();
+		Animated.sequence([
+			Animated.timing(editorAnimation, {
+				toValue: 0,
+				duration: 260,
+				useNativeDriver: false,
+			}),
+			Animated.delay(100),
+			triggerCloseAnimation(),
+		]).start(() => {
+			show.current = false;
 		});
 	};
 
