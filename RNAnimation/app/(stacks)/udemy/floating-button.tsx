@@ -7,7 +7,6 @@ import {
 	Image,
 	Animated,
 	Dimensions,
-	Pressable,
 } from "react-native";
 
 export default function FloatingButton() {
