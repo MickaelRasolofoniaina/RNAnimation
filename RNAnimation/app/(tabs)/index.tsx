@@ -45,6 +45,10 @@ const ANIMATIONS: Animation[] = [
 		title: "Text editor",
 		href: "/udemy/text-editor",
 	},
+	{
+		title: "Floating button",
+		href: "/udemy/floating-button",
+	},
 ];
 
 export default function HomeScreen() {
