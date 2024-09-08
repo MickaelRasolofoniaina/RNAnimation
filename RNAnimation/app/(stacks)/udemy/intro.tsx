@@ -46,6 +46,13 @@ export default function Intro() {
 										extrapolate: "clamp",
 									}),
 								},
+								{
+									rotate: scrollX.interpolate({
+										inputRange: [0, WINDOW_WIDTH],
+										outputRange: ["0deg", "-45deg"],
+										extrapolate: "clamp",
+									}),
+								},
 							],
 							opacity: scrollX.interpolate({
 								inputRange: [0, WINDOW_WIDTH],
